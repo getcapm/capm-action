@@ -26474,8 +26474,12 @@ function main() {
     yield (0, exec_1.exec)(capmBinary, ["--version"]);
     (0, signale_1.info)("Running CAPM...");
     const exitCode = yield (0, exec_1.exec)(capmBinary, ["run"], { ignoreReturnCode: true });
+    if (exitCode === 0) {
+      (0, signale_1.success)("Done!");
+    } else {
+      (0, signale_1.fatal)(`CAPM exited with code ${exitCode}`);
+    }
     fs_1.default.unlinkSync(capmBinary);
-    (0, signale_1.success)("Done!");
     process.exit(exitCode);
   });
 }
