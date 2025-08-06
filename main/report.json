@@ -1,0 +1,75 @@
+{
+  "version": "0.19.9",
+  "uuid": "2946ba91-8235-49ae-b718-39a7b0ea1a0e",
+  "timestamp": "2025-08-06T09:24:07+00:00",
+  "root": "/github/workspace",
+  "repository": {
+    "owner": "getcapm",
+    "name": "capm-action",
+    "branch": "main"
+  },
+  "codebase": {
+    "totals": {
+      "TypeScript": {
+        "files": 2,
+        "lines_of_code": 51,
+        "functions": 4,
+        "hard_to_maintain": 0,
+        "unmaintainable": 0
+      },
+      "JavaScript": {
+        "files": 1,
+        "lines_of_code": 0,
+        "functions": 0,
+        "hard_to_maintain": 0,
+        "unmaintainable": 0
+      }
+    },
+    "tree": {
+      "./": {
+        "entries": [
+          "src/"
+        ],
+        "profile": [34, 17, 0, 0]
+      },
+      "src/": {
+        "entries": [
+          "action.ts",
+          "capm.ts",
+          "generate-versionjs.js"
+        ],
+        "profile": [34, 17, 0, 0]
+      }
+    },
+    "files": {
+      "src/action.ts": {
+        "checksum": "759afe14e870ef66bd0798752e1a7145",
+        "language": "TypeScript",
+        "loc": 13,
+        "profile": [13, 0, 0, 0],
+        "measurements": [
+          {"unit_name": "main", "start": {"line": 12, "column": 16}, "end": {"line": 24, "column": 2}, "value": 13}
+        ]
+      },
+      "src/capm.ts": {
+        "checksum": "f04608bff90e608ab098ff7d5719a954",
+        "language": "TypeScript",
+        "loc": 38,
+        "profile": [21, 17, 0, 0],
+        "measurements": [
+          {"unit_name": "getBinaryName", "start": {"line": 9, "column": 10}, "end": {"line": 25, "column": 2}, "value": 17},
+          {"unit_name": "getLatestBinaryUrl", "start": {"line": 27, "column": 16}, "end": {"line": 32, "column": 2}, "value": 6},
+          {"unit_name": "downloadCapmBinary", "start": {"line": 34, "column": 23}, "end": {"line": 48, "column": 2}, "value": 15}
+        ]
+      },
+      "src/generate-versionjs.js": {
+        "checksum": "7abb9921a1ffff7e63a32112242115ea",
+        "language": "JavaScript",
+        "loc": 0,
+        "profile": [0, 0, 0, 0],
+        "measurements": [
+        ]
+      }
+    }
+  }
+}
