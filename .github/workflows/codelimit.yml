@@ -1,0 +1,20 @@
+name: 'codelimit'
+
+on:
+  workflow_run:
+    workflows: [main]
+    types:
+      - completed
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout sources'
+      uses: actions/checkout@v4
+
+    - name: 'Run CodeLimit'
+      uses: getcodelimit/codelimit-action@main
+      with:
+        check: false
+        codelimit_version: 'latest'

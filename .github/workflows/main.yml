@@ -1,0 +1,38 @@
+name: 'main'
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: 
+      - main
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Run tests
+      run: yarn test
+
+    - name: Build dist
+      run: yarn dist
+
+    - name: Commit dist
+      uses: stefanzweifel/git-auto-commit-action@v6
+      with:
+        commit_message: 'Distribution build'
