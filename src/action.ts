@@ -17,7 +17,7 @@ async function main() {
     info('CAPM version:');
     await exec(capmBinary, ['--version']);
     info('Running CAPM...');
-    const exitCode = await exec(capmBinary, ['run']);
+    const exitCode = await exec(capmBinary, ['run'], {ignoreReturnCode: true});
     fs.unlinkSync(capmBinary);
     success('Done!');
     process.exit(exitCode);
