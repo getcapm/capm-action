@@ -22,7 +22,7 @@ To run CAPM on every push and before every merge to main, append it to your GH
 Action workflow:
 
 ```yaml
-name: 'main'
+name: code-analysis
 
 on:
   push:
@@ -33,7 +33,7 @@ on:
       - main
 
 jobs:
-  ci:
+  code_analysis:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
