@@ -16,9 +16,9 @@ async function main() {
     info(`CAPM binary: ${capmBinary}`);
     info('CAPM version:');
     await exec(capmBinary, ['--version']);
-    await exec("ls", ['-la']);
-    await exec("ls", ['-la', '/github/workspace']);
-    await exec("ls", ['-la', '/github/']);
+    await exec("/bin/ls", ['-la']);
+    await exec("/bin/ls", ['-la', '/github/workspace']);
+    await exec("/bin/ls", ['-la', '/github/']);
     info('Running CAPM...');
     const exitCode = await exec(capmBinary, ['run'], {ignoreReturnCode: true});
     if (exitCode === 0) {
