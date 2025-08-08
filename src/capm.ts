@@ -40,6 +40,7 @@ export async function downloadCapmBinary(version: string): Promise<string> {
     }
     info(`Downloading binary from URL: ${binaryUrl}`);
     const response = await nodeFetch(binaryUrl);
+    
     const filename = path.join(__dirname, getBinaryName());
     await streamPipeline(response.body, fs.createWriteStream(filename));
     fs.chmodSync(filename, '777');
