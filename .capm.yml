@@ -1,3 +1,3 @@
 packages:
 - id: ubuntu
-  args: ls -la / && ls -la /home && ls -la /home/runner
+  args: ls -la /capm
