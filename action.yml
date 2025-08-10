@@ -3,11 +3,11 @@ description: 'Code Analysis Package Manager 📦'
 branding:
   icon: 'activity'
   color: 'green'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
 inputs:
   capm_version:
     description: 'CAPM version'
     required: false
     default: 'latest'
+runs:
+  using: 'node22'
+  main: 'dist/index.js'
