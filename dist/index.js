@@ -28916,7 +28916,7 @@ var require_github2 = __commonJS({
         }
       });
     }
-    function createOrUpdateFile(octokit, owner, repo, branchName, path, content) {
+    function createOrUpdateFile(octokit, owner, repo, branchName, message, path, content) {
       return __awaiter2(this, void 0, void 0, function* () {
         const file = yield getFile(octokit, owner, repo, branchName, path);
         const sha = file === null || file === void 0 ? void 0 : file.sha;
@@ -28926,7 +28926,7 @@ var require_github2 = __commonJS({
           repo,
           path,
           sha,
-          message: `Update by CodeLimit`,
+          message,
           branch: branchName,
           content: Buffer.from(content).toString("base64"),
           committer: {
@@ -29024,6 +29024,7 @@ var require_capm = __commonJS({
     var signale_12 = require_signale2();
     var github_1 = require_github();
     var github_2 = require_github2();
+    var BRANCH_NAME = "_capm_reports";
     var streamPipeline = (0, util_1.promisify)(require("stream").pipeline);
     function getBinaryName() {
       const binaries = {
@@ -29098,7 +29099,7 @@ var require_capm = __commonJS({
     }
     function updateReportsBranch(octokit, owner, repo) {
       return __awaiter2(this, void 0, void 0, function* () {
-        yield (0, github_2.createBranchIfNotExists)(octokit, owner, repo, "_codelimit_reports");
+        yield (0, github_2.createBranchIfNotExists)(octokit, owner, repo, BRANCH_NAME);
       });
     }
     function updatePullRequestComment(octokit, owner, repo, branch) {
@@ -29106,7 +29107,7 @@ var require_capm = __commonJS({
         var _a;
         const prNumber = (_a = github_1.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
         if (prNumber) {
-          const actionStateFile = yield (0, github_2.getFile)(octokit, owner, repo, "_codelimit_reports", `${branch}/action.json`);
+          const actionStateFile = yield (0, github_2.getFile)(octokit, owner, repo, BRANCH_NAME, `${branch}/action.json`);
           if (actionStateFile) {
             const fileContent = Buffer.from(actionStateFile.content, "base64").toString("utf-8");
             const actionState = JSON.parse(fileContent);
@@ -29118,7 +29119,7 @@ var require_capm = __commonJS({
             const commentId = yield (0, github_2.createPRComment)(octokit, owner, repo, prNumber, "CAPM CONTENT HERE");
             const actionState = { commentId };
             const actionStateJson = JSON.stringify(actionState);
-            yield (0, github_2.createOrUpdateFile)(octokit, owner, repo, "_codelimit_reports", `${branch}/action.json`, actionStateJson);
+            yield (0, github_2.createOrUpdateFile)(octokit, owner, repo, BRANCH_NAME, "Update by CAPM", `${branch}/action.json`, actionStateJson);
           }
         }
       });
@@ -29133,7 +29134,7 @@ var require_version = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.version = void 0;
     exports2.version = {
-      "revision": "ad74567",
+      "revision": "61afe11",
       "year": "2025"
     };
   }
