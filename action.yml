@@ -3,11 +3,6 @@ description: 'Code Analysis Package Manager 📦'
 branding:
   icon: 'activity'
   color: 'green'
-inputs:
-  capm_version:
-    description: 'CAPM version'
-    required: false
-    default: 'latest'
 runs:
   using: 'node20'
   main: 'dist/index.js'
