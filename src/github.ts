@@ -80,7 +80,7 @@ export async function getFile(octokit: Octokit, owner: string, repo: string, bra
 }
 
 export async function createOrUpdateFile(octokit: Octokit, owner: string, repo: string, branchName: string,
-                                         path: string, content: string) {
+                                         message: string, path: string, content: string) {
     const file = await getFile(octokit, owner, repo, branchName, path);
     const sha = file?.sha;
     const identity = await getIdentity(octokit);
@@ -89,7 +89,7 @@ export async function createOrUpdateFile(octokit: Octokit, owner: string, repo: 
         repo: repo,
         path: path,
         sha: sha,
-        message: `Update by CodeLimit`,
+        message: message,
         branch: branchName,
         content: Buffer.from(content).toString('base64'),
         committer: {

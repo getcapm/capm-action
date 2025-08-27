@@ -17,7 +17,7 @@ import {
     updateComment
 } from "./github";
 
-
+const BRANCH_NAME = '_capm_reports';
 const streamPipeline = promisify(require('stream').pipeline);
 
 function getBinaryName() {
@@ -91,13 +91,13 @@ export async function updateRepository(octokit: Octokit) {
 }
 
 async function updateReportsBranch(octokit: Octokit, owner: string, repo: string) {
-    await createBranchIfNotExists(octokit, owner, repo, '_codelimit_reports');
+    await createBranchIfNotExists(octokit, owner, repo, BRANCH_NAME);
 }
 
 async function updatePullRequestComment(octokit: Octokit, owner: string, repo: string, branch: string) {
     const prNumber = context.payload.pull_request?.number;
     if (prNumber) {
-        const actionStateFile = await getFile(octokit, owner, repo, '_codelimit_reports', `${branch}/action.json`);
+        const actionStateFile = await getFile(octokit, owner, repo, BRANCH_NAME, `${branch}/action.json`);
         if (actionStateFile) {
             const fileContent = Buffer.from(actionStateFile.content, 'base64').toString('utf-8');
             const actionState = JSON.parse(fileContent) as ActionState;
@@ -109,8 +109,8 @@ async function updatePullRequestComment(octokit: Octokit, owner: string, repo: s
             const commentId = await createPRComment(octokit, owner, repo, prNumber, "CAPM CONTENT HERE");
             const actionState: ActionState = {commentId: commentId};
             const actionStateJson = JSON.stringify(actionState);
-            await createOrUpdateFile(octokit, owner, repo, '_codelimit_reports', `${branch}/action.json`,
-                actionStateJson);
+            await createOrUpdateFile(octokit, owner, repo, BRANCH_NAME, 'Update by CAPM',
+                `${branch}/action.json`, actionStateJson);
         }
     }
 }
