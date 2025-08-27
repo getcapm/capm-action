@@ -11,3 +11,12 @@ inputs:
 runs:
   using: 'node20'
   main: 'dist/index.js'
+inputs:
+  token:
+    description: 'GitHub token for storing results'
+    required: false
+    default: ${{ github.token }}
+  capm_version:
+    description: 'CAPM version'
+    required: false
+    default: 'latest'

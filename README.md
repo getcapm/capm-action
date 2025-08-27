@@ -45,6 +45,10 @@ jobs:
 
 ## Inputs
 
+* `token`:
+  - Description: GitHub token for storing results
+  - Required: false
+  - Default: ${{ github.token }}
 * `capm_version`:
   - Desciption: CAPM version
   - Required: false 
