@@ -22,7 +22,7 @@
   "homepage": "https://github.com/getcapm/capm-action#readme",
   "devDependencies": {
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.0",
+    "@types/node": "^24.5.2",
     "@types/node-fetch": "^2.6.12",
     "@types/signale": "^1.4.7",
     "esbuild": "^0.24.0",
