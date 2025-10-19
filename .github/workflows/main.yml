@@ -33,6 +33,6 @@ jobs:
       run: yarn dist
 
     - name: Commit dist
-      uses: stefanzweifel/git-auto-commit-action@v6
+      uses: stefanzweifel/git-auto-commit-action@v7
       with:
         commit_message: Distribution build
