@@ -18,7 +18,7 @@ async function main() {
     info('CAPM version:');
     await exec(capmBinary, ['--version']);
     info('Running CAPM...');
-    const exitCode = await exec(capmBinary, ['run', '--show-output'], {ignoreReturnCode: true});
+    const exitCode = await exec(capmBinary, ['check', '--show-output'], {ignoreReturnCode: true});
     if (exitCode === 0) {
         success('Done!');
     } else {
