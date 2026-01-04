@@ -29134,8 +29134,8 @@ var require_version = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.version = void 0;
     exports2.version = {
-      "revision": "5df802f",
-      "year": "2025"
+      "revision": "45ce052",
+      "year": "2026"
     };
   }
 });
@@ -50973,7 +50973,7 @@ function main() {
     (0, signale_1.info)("CAPM version:");
     yield (0, exec_1.exec)(capmBinary, ["--version"]);
     (0, signale_1.info)("Running CAPM...");
-    const exitCode = yield (0, exec_1.exec)(capmBinary, ["run", "--show-output"], { ignoreReturnCode: true });
+    const exitCode = yield (0, exec_1.exec)(capmBinary, ["check", "--show-output"], { ignoreReturnCode: true });
     if (exitCode === 0) {
       (0, signale_1.success)("Done!");
     } else {
