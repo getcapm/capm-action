@@ -8,7 +8,7 @@
     "prepare": "mkver ./src/version.ts",
     "build": "tsc",
     "start": "npm run build && node ./build/action.js",
-    "dist": "npm run build && esbuild build/action.js --bundle --format=esm --platform=node --outfile=dist/index.js",
+    "dist": "npm run build && esbuild build/action.js --bundle --platform=node --format=esm --outfile=dist/index.js --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\"",
     "test": "vitest run"
   },
   "repository": {
@@ -35,7 +35,7 @@
     "@types/node": "^25.0.2",
     "@types/node-fetch": "^2.6.12",
     "@types/signale": "^1.4.7",
-    "esbuild": "^0.27.1",
+    "esbuild": "^0.28.2",
     "jsdom": "^29.1.1",
     "mkver": "^5.0.4",
     "typescript": "^5.9.3",
