@@ -1,8 +1,6 @@
 import nodeFetch from "node-fetch";
 import path from "path";
 import fs from "fs";
-import {promisify} from "util";
-import {error, info, success} from "signale";
 import {Octokit} from "@octokit/action";
 import {context} from "@actions/github";
 import {
@@ -15,10 +13,14 @@ import {
     getSourceBranch,
     isPullRequest,
     updateComment
-} from "./github";
+} from "./github.ts";
+import {ActionState} from "./entities/ActionState.ts";
+import signale from "signale";
+import {promisify} from "node:util";
+import stream from "node:stream";
 
 const BRANCH_NAME = '_capm_reports';
-const streamPipeline = promisify(require('stream').pipeline);
+const streamPipeline = promisify(stream.pipeline);
 
 function getBinaryName() {
     const binaries: { [platform: string]: string } = {
@@ -52,13 +54,13 @@ export async function downloadCapmBinary(version: string): Promise<string> {
     } else {
         binaryUrl = `https://github.com/getcapm/capm/releases/download/${version}/${getBinaryName()}`;
     }
-    info(`Downloading binary from URL: ${binaryUrl}`);
+    signale.info(`Downloading binary from URL: ${binaryUrl}`);
     const response = await nodeFetch(binaryUrl);
 
-    const filename = path.join(__dirname, getBinaryName());
-    await streamPipeline(response.body, fs.createWriteStream(filename));
+    const filename = path.join(import.meta.dirname, getBinaryName());
+    await streamPipeline(response.body!, fs.createWriteStream(filename));
     fs.chmodSync(filename, '777');
-    success(`Binary downloaded: ${filename}`);
+    signale.success(`Binary downloaded: ${filename}`);
     return filename;
 }
 
@@ -67,24 +69,24 @@ export async function updateRepository(octokit: Octokit) {
     const repo = getRepoName(context);
     const branch = getSourceBranch();
     if (!owner || !repo || !branch) {
-        error('Could not determine repository owner, name, or branch');
+        signale.error('Could not determine repository owner, name, or branch');
         process.exit(1);
     }
     try {
         await updateReportsBranch(octokit, owner, repo);
     } catch (e: unknown) {
-        error('Failed to update reports branch');
+        signale.error('Failed to update reports branch');
         if (e instanceof Error) {
-            error(`Reason: ${e.message}`);
+            signale.error(`Reason: ${e.message}`);
         }
     }
     if (isPullRequest()) {
         try {
             await updatePullRequestComment(octokit, owner, repo, branch);
         } catch (e: unknown) {
-            error('Failed to update pull request comment');
+            signale.error('Failed to update pull request comment');
             if (e instanceof Error) {
-                error(`Reason: ${e.message}`);
+                signale.error(`Reason: ${e.message}`);
             }
         }
     }
@@ -102,10 +104,10 @@ async function updatePullRequestComment(octokit: Octokit, owner: string, repo: s
             const fileContent = Buffer.from(actionStateFile.content, 'base64').toString('utf-8');
             const actionState = JSON.parse(fileContent) as ActionState;
             const commentId = actionState.commentId;
-            info(`Updating existing comment with ID: ${commentId}`);
+            signale.info(`Updating existing comment with ID: ${commentId}`);
             await updateComment(octokit, owner, repo, prNumber, "CAPM CONTENT HERE", commentId);
         } else {
-            info('State file not found, creating new comment');
+            signale.info('State file not found, creating new comment');
             const commentId = await createPRComment(octokit, owner, repo, prNumber, "CAPM CONTENT HERE");
             const actionState: ActionState = {commentId: commentId};
             const actionStateJson = JSON.stringify(actionState);

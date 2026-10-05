@@ -1,7 +1,6 @@
-import {Context} from "@actions/github/lib/context";
 import {context} from "@actions/github";
 import {Octokit} from "@octokit/action";
-import {GetContentResponse} from "./entities/GetContentResponse";
+import {GetContentResponse} from "./entities/GetContentResponse.ts";
 
 export async function branchExists(octokit: Octokit, owner: string, repo: string, branchName: string) {
     try {
@@ -38,11 +37,11 @@ export async function createInitialCommit(octokit: Octokit, owner: string, repo:
     return res.data.sha;
 }
 
-export function getRepoOwner(ctx: Context): string | undefined {
+export function getRepoOwner(ctx: typeof context): string | undefined {
     return ctx.payload.repository?.owner.login
 }
 
-export function getRepoName(ctx: Context): string | undefined {
+export function getRepoName(ctx: typeof context): string | undefined {
     return ctx.payload.repository?.name
 }
 

@@ -1,14 +1,15 @@
 {
   "name": "capm-action",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "action.js",
   "scripts": {
-    "prepare": "node src/generate-versionjs.js > src/version.ts",
+    "prepare": "mkver ./src/version.ts",
     "build": "tsc",
-    "start": "yarn build && node ./build/action.js",
-    "dist": "yarn build && esbuild build/action.js --bundle --platform=node --outfile=dist/index.js",
-    "test": "jest"
+    "start": "npm run build && node ./build/action.js",
+    "dist": "npm run build && esbuild build/action.js --bundle --format=esm --platform=node --outfile=dist/index.js",
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -20,35 +21,27 @@
     "url": "https://github.com/getcapm/capm-action/issues"
   },
   "homepage": "https://github.com/getcapm/capm-action#readme",
-  "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.0",
-    "@types/node-fetch": "^2.6.12",
-    "@types/signale": "^1.4.7",
-    "esbuild": "^0.24.0",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
-    "typescript": "^5.7.2"
-  },
   "dependencies": {
-    "@actions/core": "^1.10.1",
+    "@actions/core": "^2.0.1",
     "@actions/exec": "^1.1.1",
-    "@actions/github": "^5.1.1",
-    "@octokit/action": "^6.0.5",
-    "badge-maker": "^4.1.0",
-    "node-fetch": "^2.6.13",
+    "@actions/github": "^9.1.1",
+    "@octokit/action": "^8.0.4",
+    "badge-maker": "^5.0.2",
+    "node-fetch": "^3.3.2",
     "signale": "^1.4.0"
   },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
-        {
-          "tsconfig": "tsconfig.json"
-        }
-      ]
-    }
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^25.0.2",
+    "@types/node-fetch": "^2.6.12",
+    "@types/signale": "^1.4.7",
+    "esbuild": "^0.27.1",
+    "jsdom": "^29.1.1",
+    "mkver": "^5.0.4",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.9"
+  },
+  "engines": {
+    "node": ">=24.11.1"
   }
 }

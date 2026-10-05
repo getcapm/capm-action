@@ -1,9 +1,9 @@
 import fs from "fs";
 import {getInput} from "@actions/core";
 import {exec} from "@actions/exec";
-import {downloadCapmBinary, updateRepository} from "./capm";
-import {version} from "./version";
-import signale, {fatal, info, success} from "signale";
+import {downloadCapmBinary, updateRepository} from "./capm.ts";
+import Version from "./version.ts";
+import signale from "signale";
 import {Octokit} from "@octokit/action";
 
 signale.config({
@@ -11,21 +11,24 @@ signale.config({
 });
 
 async function main() {
-    info(`CAPM-action, version: ${version.revision}`);
+    signale.info(`CAPM-action, version: ${Version.gitSha.substring(0, 7)}`);
     const capmVersion = getInput('capm_version') || 'latest';
     const capmBinary = await downloadCapmBinary(capmVersion);
-    info(`CAPM binary: ${capmBinary}`);
-    info('CAPM version:');
+    signale.info(`CAPM binary: ${capmBinary}`);
+    signale.info('CAPM version:');
     await exec(capmBinary, ['--version']);
-    info('Running CAPM...');
-    const exitCode = await exec(capmBinary, ['check', '--show-output'], {ignoreReturnCode: true});
+    signale.info('Running CAPM...');
+    const exitCode = await exec(capmBinary, ['check', '--show-output', '--format', 'markdown'],
+        {ignoreReturnCode: true});
     if (exitCode === 0) {
-        success('Done!');
+        signale.success('Done!');
     } else {
-        fatal(`CAPM exited with code ${exitCode}`);
+        signale.fatal(`CAPM exited with code ${exitCode}`);
     }
-    const octokit = new Octokit({auth: getInput('token')});
-    await updateRepository(octokit);
+    if (process.env.GITHUB_ACTION) {
+        const octokit = new Octokit({auth: getInput('token')});
+        await updateRepository(octokit);
+    }
     fs.unlinkSync(capmBinary);
     process.exit(exitCode);
 }

@@ -3,14 +3,17 @@
     "src/**/*"
   ],
   "compilerOptions": {
+    "allowJs": true,
     "rootDir": "src",
     "outDir": "build",
     "strict": true,
-    "target": "es6",
+    "target": "es2017",
     "resolveJsonModule": true,
-    "module": "CommonJS",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "rewriteRelativeImportExtensions": true,
     "skipLibCheck": true
   }
 }

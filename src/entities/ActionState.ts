@@ -1,3 +1,3 @@
-interface ActionState {
+export interface ActionState {
     commentId: number;
 }
