@@ -21628,7 +21628,7 @@ var require_exec = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.exec = exec2;
-    exports.getExecOutput = getExecOutput;
+    exports.getExecOutput = getExecOutput2;
     var string_decoder_1 = __require("string_decoder");
     var tr = __importStar(require_toolrunner());
     function exec2(commandLine, args, options) {
@@ -21643,7 +21643,7 @@ var require_exec = __commonJS({
         return runner.exec();
       });
     }
-    function getExecOutput(commandLine, args, options) {
+    function getExecOutput2(commandLine, args, options) {
       return __awaiter2(this, void 0, void 0, function* () {
         var _a, _b;
         let stdout = "";
@@ -23022,7 +23022,7 @@ var require_exec2 = __commonJS({
       });
     }
     exports.exec = exec2;
-    function getExecOutput(commandLine, args, options) {
+    function getExecOutput2(commandLine, args, options) {
       var _a, _b;
       return __awaiter2(this, void 0, void 0, function* () {
         let stdout = "";
@@ -23054,7 +23054,7 @@ var require_exec2 = __commonJS({
         };
       });
     }
-    exports.getExecOutput = getExecOutput;
+    exports.getExecOutput = getExecOutput2;
   }
 });
 
@@ -63288,7 +63288,7 @@ async function downloadCapmBinary(version2) {
   import_signale.default.success(`Binary downloaded: ${filename}`);
   return filename;
 }
-async function updateRepository(octokit) {
+async function updateRepository(octokit, content) {
   const owner = getRepoOwner(context2);
   const repo = getRepoName(context2);
   const branch = getSourceBranch();
@@ -63306,7 +63306,7 @@ async function updateRepository(octokit) {
   }
   if (isPullRequest()) {
     try {
-      await updatePullRequestComment(octokit, owner, repo, branch);
+      await updatePullRequestComment(octokit, owner, repo, branch, content);
     } catch (e2) {
       import_signale.default.error("Failed to update pull request comment");
       if (e2 instanceof Error) {
@@ -63318,7 +63318,7 @@ async function updateRepository(octokit) {
 async function updateReportsBranch(octokit, owner, repo) {
   await createBranchIfNotExists(octokit, owner, repo, BRANCH_NAME);
 }
-async function updatePullRequestComment(octokit, owner, repo, branch) {
+async function updatePullRequestComment(octokit, owner, repo, branch, content) {
   var _a;
   const prNumber = (_a = context2.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number;
   if (prNumber) {
@@ -63328,10 +63328,10 @@ async function updatePullRequestComment(octokit, owner, repo, branch) {
       const actionState = JSON.parse(fileContent);
       const commentId = actionState.commentId;
       import_signale.default.info(`Updating existing comment with ID: ${commentId}`);
-      await updateComment(octokit, owner, repo, prNumber, "CAPM CONTENT HERE", commentId);
+      await updateComment(octokit, owner, repo, prNumber, content, commentId);
     } else {
       import_signale.default.info("State file not found, creating new comment");
-      const commentId = await createPRComment(octokit, owner, repo, prNumber, "CAPM CONTENT HERE");
+      const commentId = await createPRComment(octokit, owner, repo, prNumber, content);
       const actionState = { commentId };
       const actionStateJson = JSON.stringify(actionState);
       await createOrUpdateFile(octokit, owner, repo, BRANCH_NAME, "Update by CAPM", `${branch}/action.json`, actionStateJson);
@@ -63345,9 +63345,9 @@ var versionMajor = 1;
 var versionMinor = 0;
 var versionPatch = 0;
 var versionPrerelease = [];
-var release = "1.0.0+20261005221242";
-var gitSha = "48156b8a33b84abfa7fbf800d724e92e31123ef1";
-var gitDate = /* @__PURE__ */ new Date(1791238362e3);
+var release = "1.0.0+20261006000210";
+var gitSha = "a6570ac7b0d8f0fa084afba6547acdec9dc54de8";
+var gitDate = /* @__PURE__ */ new Date(179123773e4);
 var version_default = {
   version,
   versionMajor,
@@ -63441,15 +63441,17 @@ async function main() {
   import_signale2.default.info("CAPM version:");
   await (0, import_exec.exec)(capmBinary, ["--version"]);
   import_signale2.default.info("Running CAPM...");
-  const exitCode = await (0, import_exec.exec)(capmBinary, ["check", "--show-output", "--format", "markdown"], { ignoreReturnCode: true });
+  const execOutput = await (0, import_exec.getExecOutput)(capmBinary, ["check", "--show-output", "--format", "markdown"], { ignoreReturnCode: true });
+  const exitCode = execOutput.exitCode;
   if (exitCode === 0) {
     import_signale2.default.success("Done!");
   } else {
     import_signale2.default.fatal(`CAPM exited with code ${exitCode}`);
   }
+  console.log(execOutput.stdout);
   if (process.env.GITHUB_ACTION) {
     const octokit = new Octokit2({ auth: (0, import_core3.getInput)("token") });
-    await updateRepository(octokit);
+    await updateRepository(octokit, execOutput.stdout);
   }
   fs3.unlinkSync(capmBinary);
   process.exit(exitCode);

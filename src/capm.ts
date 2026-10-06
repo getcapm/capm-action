@@ -64,7 +64,7 @@ export async function downloadCapmBinary(version: string): Promise<string> {
     return filename;
 }
 
-export async function updateRepository(octokit: Octokit) {
+export async function updateRepository(octokit: Octokit, content: string) {
     const owner = getRepoOwner(context);
     const repo = getRepoName(context);
     const branch = getSourceBranch();
@@ -82,7 +82,7 @@ export async function updateRepository(octokit: Octokit) {
     }
     if (isPullRequest()) {
         try {
-            await updatePullRequestComment(octokit, owner, repo, branch);
+            await updatePullRequestComment(octokit, owner, repo, branch, content);
         } catch (e: unknown) {
             signale.error('Failed to update pull request comment');
             if (e instanceof Error) {
@@ -96,7 +96,8 @@ async function updateReportsBranch(octokit: Octokit, owner: string, repo: string
     await createBranchIfNotExists(octokit, owner, repo, BRANCH_NAME);
 }
 
-async function updatePullRequestComment(octokit: Octokit, owner: string, repo: string, branch: string) {
+async function updatePullRequestComment(octokit: Octokit, owner: string, repo: string, branch: string,
+                                        content: string) {
     const prNumber = context.payload.pull_request?.number;
     if (prNumber) {
         const actionStateFile = await getFile(octokit, owner, repo, BRANCH_NAME, `${branch}/action.json`);
@@ -105,10 +106,10 @@ async function updatePullRequestComment(octokit: Octokit, owner: string, repo: s
             const actionState = JSON.parse(fileContent) as ActionState;
             const commentId = actionState.commentId;
             signale.info(`Updating existing comment with ID: ${commentId}`);
-            await updateComment(octokit, owner, repo, prNumber, "CAPM CONTENT HERE", commentId);
+            await updateComment(octokit, owner, repo, prNumber, content, commentId);
         } else {
             signale.info('State file not found, creating new comment');
-            const commentId = await createPRComment(octokit, owner, repo, prNumber, "CAPM CONTENT HERE");
+            const commentId = await createPRComment(octokit, owner, repo, prNumber, content);
             const actionState: ActionState = {commentId: commentId};
             const actionStateJson = JSON.stringify(actionState);
             await createOrUpdateFile(octokit, owner, repo, BRANCH_NAME, 'Update by CAPM',
