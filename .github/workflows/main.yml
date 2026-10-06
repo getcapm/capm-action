@@ -33,6 +33,7 @@ jobs:
       run: npm run dist
 
     - name: Commit dist
+      if: github.ref == 'refs/heads/main'
       uses: stefanzweifel/git-auto-commit-action@v7
       with:
         commit_message: Distribution build
