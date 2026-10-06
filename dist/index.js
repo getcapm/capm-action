@@ -63345,9 +63345,9 @@ var versionMajor = 1;
 var versionMinor = 0;
 var versionPatch = 0;
 var versionPrerelease = [];
-var release = "1.0.0+20261006103535";
-var gitSha = "61a5c128d3f185e33f222aae8471afb903218dc3";
-var gitDate = /* @__PURE__ */ new Date(1791282935e3);
+var release = "1.0.0+20261006104006";
+var gitSha = "e8dcd6ef0cbf3e93fc65413b8b707c6fc5869c94";
+var gitDate = /* @__PURE__ */ new Date(1791283206e3);
 var version_default = {
   version,
   versionMajor,
