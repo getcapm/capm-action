@@ -122,11 +122,11 @@ var require_command = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.issueCommand = issueCommand;
     exports.issue = issue;
-    var os = __importStar(__require("os"));
+    var os2 = __importStar(__require("os"));
     var utils_1 = require_utils();
     function issueCommand(command, properties, message) {
       const cmd = new Command(command, properties, message);
-      process.stdout.write(cmd.toString() + os.EOL);
+      process.stdout.write(cmd.toString() + os2.EOL);
     }
     function issue(name, message = "") {
       issueCommand(name, {}, message);
@@ -219,7 +219,7 @@ var require_file_command = __commonJS({
     exports.prepareKeyValueMessage = prepareKeyValueMessage;
     var crypto = __importStar(__require("crypto"));
     var fs4 = __importStar(__require("fs"));
-    var os = __importStar(__require("os"));
+    var os2 = __importStar(__require("os"));
     var utils_1 = require_utils();
     function issueFileCommand(command, message) {
       const filePath = process.env[`GITHUB_${command}`];
@@ -229,7 +229,7 @@ var require_file_command = __commonJS({
       if (!fs4.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
       }
-      fs4.appendFileSync(filePath, `${(0, utils_1.toCommandValue)(message)}${os.EOL}`, {
+      fs4.appendFileSync(filePath, `${(0, utils_1.toCommandValue)(message)}${os2.EOL}`, {
         encoding: "utf8"
       });
     }
@@ -242,7 +242,7 @@ var require_file_command = __commonJS({
       if (convertedValue.includes(delimiter)) {
         throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter}"`);
       }
-      return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
+      return `${key}<<${delimiter}${os2.EOL}${convertedValue}${os2.EOL}${delimiter}`;
     }
   }
 });
@@ -21131,7 +21131,7 @@ var require_toolrunner = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ToolRunner = void 0;
     exports.argStringToArray = argStringToArray;
-    var os = __importStar(__require("os"));
+    var os2 = __importStar(__require("os"));
     var events = __importStar(__require("events"));
     var child = __importStar(__require("child_process"));
     var path2 = __importStar(__require("path"));
@@ -21186,12 +21186,12 @@ var require_toolrunner = __commonJS({
       _processLineBuffer(data, strBuffer, onLine) {
         try {
           let s2 = strBuffer + data.toString();
-          let n = s2.indexOf(os.EOL);
+          let n = s2.indexOf(os2.EOL);
           while (n > -1) {
             const line = s2.substring(0, n);
             onLine(line);
-            s2 = s2.substring(n + os.EOL.length);
-            n = s2.indexOf(os.EOL);
+            s2 = s2.substring(n + os2.EOL.length);
+            n = s2.indexOf(os2.EOL);
           }
           return s2;
         } catch (err) {
@@ -21360,7 +21360,7 @@ var require_toolrunner = __commonJS({
             }
             const optionsNonNull = this._cloneExecOptions(this.options);
             if (!optionsNonNull.silent && optionsNonNull.outStream) {
-              optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os.EOL);
+              optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os2.EOL);
             }
             const state = new ExecState(optionsNonNull, this.toolPath);
             state.on("debug", (message) => {
@@ -21901,7 +21901,7 @@ var require_core = __commonJS({
     var command_1 = require_command();
     var file_command_1 = require_file_command();
     var utils_1 = require_utils();
-    var os = __importStar(__require("os"));
+    var os2 = __importStar(__require("os"));
     var path2 = __importStar(__require("path"));
     var oidc_utils_1 = require_oidc_utils();
     var ExitCode;
@@ -21963,7 +21963,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       if (filePath) {
         return (0, file_command_1.issueFileCommand)("OUTPUT", (0, file_command_1.prepareKeyValueMessage)(name, value));
       }
-      process.stdout.write(os.EOL);
+      process.stdout.write(os2.EOL);
       (0, command_1.issueCommand)("set-output", { name }, (0, utils_1.toCommandValue)(value));
     }
     function setCommandEcho(enabled) {
@@ -21989,7 +21989,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
     function info(message) {
-      process.stdout.write(message + os.EOL);
+      process.stdout.write(message + os2.EOL);
     }
     function startGroup(name) {
       (0, command_1.issue)("group", name);
@@ -22523,7 +22523,7 @@ var require_toolrunner2 = __commonJS({
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.argStringToArray = exports.ToolRunner = void 0;
-    var os = __importStar(__require("os"));
+    var os2 = __importStar(__require("os"));
     var events = __importStar(__require("events"));
     var child = __importStar(__require("child_process"));
     var path2 = __importStar(__require("path"));
@@ -22578,12 +22578,12 @@ var require_toolrunner2 = __commonJS({
       _processLineBuffer(data, strBuffer, onLine) {
         try {
           let s2 = strBuffer + data.toString();
-          let n = s2.indexOf(os.EOL);
+          let n = s2.indexOf(os2.EOL);
           while (n > -1) {
             const line = s2.substring(0, n);
             onLine(line);
-            s2 = s2.substring(n + os.EOL.length);
-            n = s2.indexOf(os.EOL);
+            s2 = s2.substring(n + os2.EOL.length);
+            n = s2.indexOf(os2.EOL);
           }
           return s2;
         } catch (err) {
@@ -22752,7 +22752,7 @@ var require_toolrunner2 = __commonJS({
             }
             const optionsNonNull = this._cloneExecOptions(this.options);
             if (!optionsNonNull.silent && optionsNonNull.outStream) {
-              optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os.EOL);
+              optionsNonNull.outStream.write(this._getCommandString(optionsNonNull) + os2.EOL);
             }
             const state = new ExecState(optionsNonNull, this.toolPath);
             state.on("debug", (message) => {
@@ -29287,7 +29287,7 @@ var require_has_flag = __commonJS({
 var require_supports_color = __commonJS({
   "node_modules/signale/node_modules/supports-color/index.js"(exports, module) {
     "use strict";
-    var os = __require("os");
+    var os2 = __require("os");
     var hasFlag = require_has_flag();
     var env = process.env;
     var forceColor;
@@ -29325,7 +29325,7 @@ var require_supports_color = __commonJS({
       }
       const min = forceColor ? 1 : 0;
       if (process.platform === "win32") {
-        const osRelease = os.release().split(".");
+        const osRelease = os2.release().split(".");
         if (Number(process.versions.node.split(".")[0]) >= 8 && Number(osRelease[0]) >= 10 && Number(osRelease[2]) >= 10586) {
           return Number(osRelease[2]) >= 14931 ? 3 : 2;
         }
@@ -63248,24 +63248,37 @@ async function createBranchIfNotExists(octokit, owner, repo, branchName) {
 var import_signale = __toESM(require_signale2(), 1);
 import { promisify as promisify2 } from "node:util";
 import stream from "node:stream";
+import * as os from "node:os";
 var BRANCH_NAME = "_capm_reports";
 var streamPipeline = promisify2(stream.pipeline);
+function getProcessorArchitecture() {
+  const arch2 = os.arch();
+  if (arch2 === "arm64" || arch2 === "arm") {
+    return "arm";
+  } else {
+    return "intel";
+  }
+}
 function getBinaryName() {
   const binaries = {
-    "darwin": "capm-macos",
-    "win32": "capm.exe",
-    "linux": "capm-linux"
+    "darwin-arm": "capm-macos-arm",
+    "darwin-intel": "capm-macos-x86_64",
+    "win32-intel": "capm.exe",
+    "linux-arm": "capm-linux-arm64",
+    "linux-intel": "capm-linux-x86_64"
   };
+  const arch2 = getProcessorArchitecture();
   if (process.env.RUNNER_OS) {
-    const platform = process.env.RUNNER_OS.toLowerCase();
-    if (platform in binaries) {
-      return binaries[platform];
+    const platform2 = `${process.env.RUNNER_OS.toLowerCase()}-${arch2}`;
+    if (platform2 in binaries) {
+      return binaries[platform2];
     }
   }
-  if (process.platform in binaries) {
-    return binaries[process.platform];
+  const platform = `${process.platform}-${arch2}`;
+  if (platform in binaries) {
+    return binaries[platform];
   }
-  return binaries["linux"];
+  return binaries["linux-intel"];
 }
 async function getLatestBinaryUrl() {
   const latestUrl = "https://github.com/getcapm/capm/releases/latest";
@@ -63345,9 +63358,9 @@ var versionMajor = 1;
 var versionMinor = 0;
 var versionPatch = 0;
 var versionPrerelease = [];
-var release = "1.0.0+20261006113345";
-var gitSha = "e4349842dd1d1570e6683b7e6df1c00aff9218f8";
-var gitDate = /* @__PURE__ */ new Date(1791286425e3);
+var release = "1.0.0+20261009121518";
+var gitSha = "16a9495d41157cc410fbbea7a826392f0f95fc22";
+var gitDate = /* @__PURE__ */ new Date(1791548118e3);
 var version_default = {
   version,
   versionMajor,
