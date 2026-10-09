@@ -18,26 +18,40 @@ import {ActionState} from "./entities/ActionState.ts";
 import signale from "signale";
 import {promisify} from "node:util";
 import stream from "node:stream";
+import * as os from "node:os";
 
 const BRANCH_NAME = '_capm_reports';
 const streamPipeline = promisify(stream.pipeline);
 
+function getProcessorArchitecture(): 'arm' | 'intel' {
+    const arch = os.arch();
+    if (arch === 'arm64' || arch === 'arm') {
+        return 'arm';
+    } else {
+        return 'intel';
+    }
+}
+
 function getBinaryName() {
     const binaries: { [platform: string]: string } = {
-        'darwin': 'capm-macos',
-        'win32': 'capm.exe',
-        'linux': 'capm-linux'
+        'darwin-arm': 'capm-macos-arm',
+        'darwin-intel': 'capm-macos-x86_64',
+        'win32-intel': 'capm.exe',
+        'linux-arm': 'capm-linux-arm64',
+        'linux-intel': 'capm-linux-x86_64',
     };
+    const arch = getProcessorArchitecture();
     if (process.env.RUNNER_OS) {
-        const platform = process.env.RUNNER_OS.toLowerCase();
+        const platform = `${process.env.RUNNER_OS.toLowerCase()}-${arch}`;
         if (platform in binaries) {
             return binaries[platform];
         }
     }
-    if (process.platform in binaries) {
-        return binaries[process.platform];
+    const platform = `${process.platform}-${arch}`;
+    if (platform in binaries) {
+        return binaries[platform];
     }
-    return binaries['linux'];
+    return binaries['linux-intel'];
 }
 
 async function getLatestBinaryUrl() {
@@ -56,7 +70,6 @@ export async function downloadCapmBinary(version: string): Promise<string> {
     }
     signale.info(`Downloading binary from URL: ${binaryUrl}`);
     const response = await nodeFetch(binaryUrl);
-
     const filename = path.join(import.meta.dirname, getBinaryName());
     await streamPipeline(response.body!, fs.createWriteStream(filename));
     fs.chmodSync(filename, '777');
