@@ -38,7 +38,7 @@
     "esbuild": "^0.28.2",
     "jsdom": "^29.1.1",
     "mkver": "^5.0.4",
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.9"
   },
   "engines": {
