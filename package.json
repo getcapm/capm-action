@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/getcapm/capm-action#readme",
   "dependencies": {
-    "@actions/core": "^2.0.1",
+    "@actions/core": "^3.0.1",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^9.1.1",
     "@octokit/action": "^8.0.4",
